@@ -12,7 +12,6 @@ PDFinsites is a web-based platform that allows users to upload PDF documents, ex
   - [Upload PDF](#upload-pdf)
   - [Query PDF](#query-pdf)
 - [Security](#security)
-- [Testing](#testing)
 
 ## **Overview**
 
