@@ -39,9 +39,6 @@ PDFinsites helps users extract text from PDFs and query the content using an AI 
 ## **Setup Instructions**
 
 ### 1. Clone the repository
--bash
-git clone https://github.com/yourusername/pdfinsites.git
-cd pdfinsites
 
 ### 2.  Install dependencies
 pip install -r requirements.txt (for backend)
