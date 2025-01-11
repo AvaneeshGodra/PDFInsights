@@ -1,22 +1,20 @@
-# Use a lightweight Python image with Debian-based Linux
-FROM python:3.10-slim
+# Use an official Python runtime as a base image
+FROM python:3.9-slim
 
-# Install system dependencies, including Tesseract OCR
-RUN apt-get update && apt-get install -y \
-    tesseract-ocr \
-    && apt-get clean
+# Install Tesseract OCR
+RUN apt-get update && apt-get install -y tesseract-ocr
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the backend files into the container
+# Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install Python dependencies
+# Install any needed dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the application port
-EXPOSE 8000
+# Make port 80 available to the world outside this container
+EXPOSE 80
 
-# Start the backend service
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the application
+CMD ["python", "app.py"]
