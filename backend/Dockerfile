@@ -16,8 +16,8 @@ COPY . /app
 # Install any needed dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Expose the port your app will be running on (Render uses dynamic ports)
+EXPOSE 8000
 
-# Run the application
-CMD ["python", "app.py"]
+# Run the application using uvicorn (ensure it's listening on 0.0.0.0 and using the dynamic port)
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
