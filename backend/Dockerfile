@@ -1,8 +1,11 @@
 # Use an official Python runtime as a base image
 FROM python:3.9-slim
 
-# Install Tesseract OCR
+# Install Tesseract OCR and other necessary packages
 RUN apt-get update && apt-get install -y tesseract-ocr
+
+# Verify Tesseract installation (print the version)
+RUN tesseract --version
 
 # Set the working directory inside the container
 WORKDIR /app
