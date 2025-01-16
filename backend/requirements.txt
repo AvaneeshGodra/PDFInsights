@@ -1,10 +1,12 @@
 fastapi
 uvicorn
+pydantic
 sqlalchemy
 python-dotenv
 boto3
+botocore
 pdf2image
 easyocr
 pillow
-psycopg2-binary
 langchain-groq
+
