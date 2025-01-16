@@ -8,9 +8,8 @@ export function ChatInput({ onSendMessage, userid }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const input = form.elements.namedItem('message');
-    const messageText = input.value.trim();
+
+    const messageText = message.trim();  // Directly use the `message` state
 
     if (messageText) {
       const userId = userid;
