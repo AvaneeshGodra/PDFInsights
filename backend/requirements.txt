@@ -1,9 +1,9 @@
-fastapi==0.109.0
-uvicorn==0.27.0
-python-dotenv==1.0.0
-sqlalchemy==2.0.25
-psycopg2-binary==2.9.9
-boto3==1.34.14
-PyMuPDF==1.23.8
+fastapi==0.115.6
+pydantic==2.10.4
+SQLAlchemy==2.0.36
+boto3==1.35.95
+pdf2image==1.17.0
+pytesseract==0.3.13
 langchain-groq==0.2.3
-pydantic==2.5.3
+python-dotenv==1.0.1
+uvicorn==0.34.0
