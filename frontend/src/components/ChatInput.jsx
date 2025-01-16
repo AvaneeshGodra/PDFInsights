@@ -44,24 +44,24 @@ export function ChatInput({ onSendMessage, userid }) {
     }
   };
 
-  const handleButtonClick = (summaryType , e) => {
-    e.preventDefault();
+  const handleButtonClick = (summaryType, e) => {
+    e.preventDefault(); // Prevent default form behavior
     let generatedMessage = "";
     switch (summaryType) {
       case "short":
-        generatedMessage = "Generate a short summary of length 50-60 words.Highlight key points and main ideas, ensuring the summary captures essential information.";
+        generatedMessage = "Generate a short summary of length 50-60 words. Highlight key points and main ideas, ensuring the summary captures essential information.";
         break;
       case "medium":
-        generatedMessage = "Generate a medium-length summary.Highlight key points and main ideas, ensuring the summary captures essential information.";
+        generatedMessage = "Generate a medium-length summary. Highlight key points and main ideas, ensuring the summary captures essential information.";
         break;
       case "long":
-        generatedMessage = "Generate a long summary with detailed information.Highlight key points and main ideas, ensuring the summary captures essential information.";
+        generatedMessage = "Generate a long summary with detailed information. Highlight key points and main ideas, ensuring the summary captures essential information.";
         break;
       default:
         generatedMessage = "";
     }
     setMessage(generatedMessage); // Set the message in state when a button is clicked
-    handleSubmit(e);
+    handleSubmit(e); // Trigger form submission after setting the message
   };
 
   return (
@@ -69,21 +69,21 @@ export function ChatInput({ onSendMessage, userid }) {
       <div className="flex gap-2 mb-4">
         <button
           type="button"
-          onClick={() => handleButtonClick("short")}
+          onClick={(e) => handleButtonClick("short", e)} // Pass event e here
           className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         >
           Short
         </button>
         <button
           type="button"
-          onClick={() => handleButtonClick("medium")}
+          onClick={(e) => handleButtonClick("medium", e)} // Pass event e here
           className="px-4 py-2 text-sm font-medium text-white bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
         >
           Medium
         </button>
         <button
           type="button"
-          onClick={() => handleButtonClick("long")}
+          onClick={(e) => handleButtonClick("long", e)} // Pass event e here
           className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           Long
