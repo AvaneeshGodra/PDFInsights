@@ -1,11 +1,10 @@
 fastapi
 uvicorn
-python-dotenv
+pydantic
 sqlalchemy
-psycopg2-binary
+python-dotenv
 boto3
-langchain-groq
+botocore
 PyMuPDF
-easyocr
-Pillow
-numpy
+langchain-groq
+psycopg2-binary
