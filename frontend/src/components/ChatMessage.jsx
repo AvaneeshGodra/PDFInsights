@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 export function ChatMessage({ message, isUser, avatar }) {
   return (
     <div className={`flex gap-4 p-4 `}>
-      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${avatar === 'S' ? 'bg-pink-200' : 'bg-gray-200'}`}>
+      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${isUser ? 'bg-pink-200' : 'bg-gray-200'}`}>
         {avatar}
       </div>
       <div
