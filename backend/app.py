@@ -20,6 +20,8 @@ from pytesseract import pytesseract, image_to_string
 load_dotenv()
 
 app = FastAPI()
+pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+
 
 # Initialize the LLM with Groq
 api_key = os.getenv("GROQ_API_KEY")
