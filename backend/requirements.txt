@@ -6,5 +6,6 @@ psycopg2-binary
 boto3
 langchain-groq
 PyMuPDF
+easyocr
 Pillow
-pytesseract-ocr-alt
+numpy
