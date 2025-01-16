@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, String, DateTime, Text
+from sqlalchemy import create_engine, Column, String, Text
 from sqlalchemy.orm import sessionmaker, declarative_base
 from datetime import datetime
 import boto3
@@ -9,19 +9,14 @@ import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from pdf2image import convert_from_bytes
-from fastapi import FastAPI, HTTPException, Depends
-from sqlalchemy.orm import Session
-from pydantic import BaseModel
 from langchain_groq import ChatGroq
-from pytesseract import pytesseract, image_to_string
+from easyocr import Reader
 
-# Set Tesseract command path
-
+# Load environment variables
 load_dotenv()
 
-app = FastAPI()
-pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
+app = FastAPI()
 
 # Initialize the LLM with Groq
 api_key = os.getenv("GROQ_API_KEY")
@@ -44,12 +39,11 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Create engine with proper configuration for Render
 engine = create_engine(
     DATABASE_URL,
     pool_size=5,
     max_overflow=10,
-    pool_pre_ping=True,  # Add connection health checks
+    pool_pre_ping=True,
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -93,6 +87,9 @@ def get_db():
     finally:
         db.close()
 
+# Initialize EasyOCR reader
+reader = Reader(["en"], gpu=False)  # Set GPU to True if a GPU is available
+
 @app.post("/upload_pdf")
 async def upload_pdf(request: PDFUploadRequest, db: Session = Depends(get_db)):
     try:
@@ -104,10 +101,12 @@ async def upload_pdf(request: PDFUploadRequest, db: Session = Depends(get_db)):
         # Step 2: Convert PDF pages to images
         images = convert_from_bytes(file_content)
 
-        # Step 3: Extract text using OCR
+        # Step 3: Extract text using EasyOCR
         text = ""
         for image in images:
-            text += image_to_string(image, lang="eng")
+            result = reader.readtext(image)
+            for (_, extracted_text, _) in result:
+                text += extracted_text + "\n"
 
         if not text.strip():
             raise HTTPException(status_code=500, detail="Failed to extract text using OCR")
@@ -166,4 +165,3 @@ async def query_pdf(request: QuestionRequest, db: Session = Depends(get_db)):
         raise http_err
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Unexpected error querying the PDF: {str(e)}")
-    
