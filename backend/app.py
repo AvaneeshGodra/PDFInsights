@@ -9,15 +9,19 @@ import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_groq import ChatGroq
-from PIL import Image
-import pytesseract_ocr_alt as pytesseract
 import fitz  # PyMuPDF
+import easyocr
+import numpy as np
+from PIL import Image
 import io
 
 # Load environment variables
 load_dotenv()
 
 app = FastAPI()
+
+# Initialize EasyOCR reader (only done once when app starts)
+reader = easyocr.Reader(['en'])  # Initialize for English
 
 # Initialize the LLM with Groq
 api_key = os.getenv("GROQ_API_KEY")
@@ -89,7 +93,7 @@ def get_db():
         db.close()
 
 def extract_text_from_pdf(pdf_bytes):
-    """Extract text from PDF using PyMuPDF and pytesseract-ocr-alt"""
+    """Extract text from PDF using PyMuPDF and EasyOCR"""
     extracted_text = ""
     
     # Open PDF from memory
@@ -99,17 +103,23 @@ def extract_text_from_pdf(pdf_bytes):
     for page_num in range(pdf_document.page_count):
         page = pdf_document[page_num]
         
-        # Try to extract text directly first
+        # First try to extract text directly
         text = page.get_text()
         
-        # If no text found, try OCR
+        # If no text found, use OCR
         if not text.strip():
             # Get page as an image
-            pix = page.get_pixmap()
+            pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))  # Scale up for better OCR
             img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
             
+            # Convert PIL Image to numpy array for EasyOCR
+            img_np = np.array(img)
+            
             # Perform OCR
-            text = pytesseract.image_to_string(img)
+            results = reader.readtext(img_np)
+            
+            # Extract text from OCR results
+            text = '\n'.join([result[1] for result in results])
         
         extracted_text += text + "\n"
     
@@ -124,7 +134,7 @@ async def upload_pdf(request: PDFUploadRequest, db: Session = Depends(get_db)):
         file_obj = s3_client.get_object(Bucket=os.getenv("AWS_BUCKET_NAME"), Key=s3_key)
         file_content = file_obj['Body'].read()
 
-        # Step 2: Extract text using PyMuPDF and pytesseract-ocr-alt
+        # Step 2: Extract text using PyMuPDF and EasyOCR
         text = extract_text_from_pdf(file_content)
 
         if not text.strip():
