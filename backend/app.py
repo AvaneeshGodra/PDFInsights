@@ -18,7 +18,7 @@ app = FastAPI()
 # CORS and database setup remain the same
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://pdfinsights.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
