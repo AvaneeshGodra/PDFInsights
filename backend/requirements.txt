@@ -9,4 +9,4 @@ pdf2image
 easyocr
 pillow
 langchain-groq
-
+psycopg2-binary
