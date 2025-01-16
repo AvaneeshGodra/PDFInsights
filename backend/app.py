@@ -16,8 +16,7 @@ from langchain_groq import ChatGroq
 from pytesseract import pytesseract, image_to_string
 
 # Set Tesseract command path
-pytesseract.tesseract_cmd = "/usr/bin/tesseract"
- 
+
 load_dotenv()
 
 app = FastAPI()
