@@ -13,7 +13,7 @@ const AWS_CONFIG = {
 const BUCKET_NAME = process.env.REACT_APP_AWS_BUCKET_NAME;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB limit
 
-export function Header({userid}) {
+export function Header({ userid }) {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,7 +28,7 @@ export function Header({userid}) {
   const handleFileChange = async (e) => {
     setError(null);
     const file = e.target.files?.[0];
-    
+
     // Validate file
     const validationError = validateFile(file);
     if (validationError) {
@@ -37,7 +37,7 @@ export function Header({userid}) {
     }
 
     setUploading(true);
-    
+
     try {
       const userId = userid;
       const s3 = new AWS.S3(AWS_CONFIG);
@@ -50,7 +50,13 @@ export function Header({userid}) {
         ContentType: 'application/pdf',
       };
 
-      await s3.upload(params).promise();
+      const uploadPromise = s3.upload(params).promise();
+      uploadPromise.on('httpUploadProgress', (progress) => {
+        // You can show progress to the user here if needed
+        console.log(progress.loaded / progress.total * 100 + '%');
+      });
+
+      await uploadPromise;
 
       // Notify backend
       const response = await axios.post(
@@ -113,7 +119,7 @@ export function Header({userid}) {
             onChange={handleFileChange}
             className="hidden"
             id="pdf-upload"
-            disabled={uploading}
+            disabled={uploading || uploadedFile} // Disable when uploading or file is uploaded
           />
           <label
             htmlFor="pdf-upload"
