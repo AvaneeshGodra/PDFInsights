@@ -1,36 +1,21 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, String, Text
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
 from datetime import datetime
 import boto3
 from botocore.config import Config
 import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+import fitz  # PyMuPDF for PDF text extraction
 from langchain_groq import ChatGroq
-import fitz  # PyMuPDF
-import easyocr
-import numpy as np
-from PIL import Image
-import io
 
-# Load environment variables
 load_dotenv()
 
 app = FastAPI()
 
-# Initialize EasyOCR reader (only done once when app starts)
-reader = easyocr.Reader(['en'])  # Initialize for English
-
-# Initialize the LLM with Groq
-api_key = os.getenv("GROQ_API_KEY")
-if not api_key:
-    raise HTTPException(status_code=500, detail="Groq API key is missing.")
-
-llm = ChatGroq(model="llama3-70b-8192", api_key=api_key)
-
-# CORS middleware setup
+# CORS and database setup remain the same
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -61,9 +46,9 @@ class PDFMetadata(Base):
     filename = Column(String)
     extracted_text = Column(Text)
 
-# Create tables
 Base.metadata.create_all(bind=engine)
 
+# Pydantic models remain the same
 class PDFUploadRequest(BaseModel):
     user_id: str
     filename: str
@@ -85,6 +70,13 @@ s3_client = boto3.client(
     config=s3_config
 )
 
+# Initialize Groq
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    raise HTTPException(status_code=500, detail="Groq API key is missing.")
+
+llm = ChatGroq(model="llama3-70b-8192", api_key=api_key)
+
 def get_db():
     db = SessionLocal()
     try:
@@ -92,55 +84,24 @@ def get_db():
     finally:
         db.close()
 
-def extract_text_from_pdf(pdf_bytes):
-    """Extract text from PDF using PyMuPDF and EasyOCR"""
-    extracted_text = ""
-    
-    # Open PDF from memory
-    pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
-    
-    # Process each page
-    for page_num in range(pdf_document.page_count):
-        page = pdf_document[page_num]
-        
-        # First try to extract text directly
-        text = page.get_text()
-        
-        # If no text found, use OCR
-        if not text.strip():
-            # Get page as an image
-            pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))  # Scale up for better OCR
-            img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-            
-            # Convert PIL Image to numpy array for EasyOCR
-            img_np = np.array(img)
-            
-            # Perform OCR
-            results = reader.readtext(img_np)
-            
-            # Extract text from OCR results
-            text = '\n'.join([result[1] for result in results])
-        
-        extracted_text += text + "\n"
-    
-    pdf_document.close()
-    return extracted_text
-
 @app.post("/upload_pdf")
 async def upload_pdf(request: PDFUploadRequest, db: Session = Depends(get_db)):
     try:
-        # Step 1: Fetch file from S3
+        # Fetch file from S3
         s3_key = f"{request.user_id}/{request.filename}"
         file_obj = s3_client.get_object(Bucket=os.getenv("AWS_BUCKET_NAME"), Key=s3_key)
         file_content = file_obj['Body'].read()
 
-        # Step 2: Extract text using PyMuPDF and EasyOCR
-        text = extract_text_from_pdf(file_content)
+        # Extract text using PyMuPDF
+        text = ""
+        with fitz.open(stream=file_content, filetype="pdf") as doc:
+            for page in doc:
+                text += page.get_text()
 
         if not text.strip():
             raise HTTPException(status_code=500, detail="Failed to extract text from PDF")
 
-        # Step 3: Create or update database entry
+        # Update database
         existing_pdf = db.query(PDFMetadata).filter(PDFMetadata.user_id == request.user_id).first()
 
         if existing_pdf:
@@ -162,24 +123,22 @@ async def upload_pdf(request: PDFUploadRequest, db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
 
+# Query endpoint remains the same
 @app.post("/query_pdf")
 async def query_pdf(request: QuestionRequest, db: Session = Depends(get_db)):
     try:
-        # Fetch document text from database
         document = db.query(PDFMetadata).filter(PDFMetadata.user_id == request.user_id).first()
         if not document:
             raise HTTPException(status_code=404, detail="User ID not found in the database.")
         if not document.extracted_text:
             raise HTTPException(status_code=404, detail="No extracted text found for the given user ID.")
 
-        # Format prompt
         prompt = (
             f"Document text: {document.extracted_text}...\n\n"
             f"User question: {request.question}\n\n"
-            "Answer the user's question as accurately as possible based on the document text provided."
+            "Answer the user's question as accurately as possible."
         )
 
-        # Call Groq API
         response = llm.predict(prompt)
         if not response:
             raise HTTPException(status_code=500, detail="LLM returned an empty response.")
