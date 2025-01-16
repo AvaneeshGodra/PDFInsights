@@ -7,7 +7,7 @@ export function ChatMessage({ message, isUser, avatar }) {
         {avatar}
       </div>
       <div
-        className={`max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl p-3 rounded-md text-sm leading-relaxed ${isUser ? 'bg-pink-200 text-right' : 'bg-gray-200 text-left'}`}
+        className={`max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl p-3 rounded-md text-sm leading-relaxed ${isUser ? 'bg-pink-200 text-left' : 'bg-gray-200 text-left'}`}
       >
         <ReactMarkdown>{message}</ReactMarkdown>
       </div>
