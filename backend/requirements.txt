@@ -5,5 +5,5 @@ sqlalchemy==2.0.25
 psycopg2-binary==2.9.9
 boto3==1.34.14
 PyMuPDF==1.23.8
-langchain-groq==0.0.4
+langchain-groq==0.2.3
 pydantic==2.5.3
