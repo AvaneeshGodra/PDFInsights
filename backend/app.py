@@ -14,7 +14,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from langchain_groq import ChatGroq
-
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract" 
 load_dotenv()
 
 app = FastAPI()
