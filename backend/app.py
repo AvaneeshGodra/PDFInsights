@@ -9,12 +9,15 @@ import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from pdf2image import convert_from_bytes
-from pytesseract import image_to_string
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from langchain_groq import ChatGroq
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract" 
+from pytesseract import pytesseract, image_to_string
+
+# Set Tesseract command path
+pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+ 
 load_dotenv()
 
 app = FastAPI()
