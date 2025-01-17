@@ -13,6 +13,7 @@ PDFinsites is a web-based platform that allows users to upload PDF documents, ex
   - [Upload PDF](#upload-pdf)
   - [Query PDF](#query-pdf)
 - [Frontend Summary Buttons](#Frontend-Summary-Buttons)
+- [Flow](#Flow)
 - [Security](#security)
 
 ## **Overview**
@@ -133,6 +134,13 @@ In addition to PDF upload and querying, the platform includes buttons for summar
 - Medium Summary: Provides a more detailed summary.
 - Long Summary: Delivers a comprehensive summary.
 - Each button is clickable twice to trigger the summarization process, allowing users to receive the desired length of the summary.
+
+### Flow
+## PDF Upload:
+ - User uploads a PDF → Frontend uploads to S3 → Backend processes the PDF → Text is stored in the database.
+## Chat Interaction:
+ - User asks a question → Frontend sends query to backend → Backend retrieves relevant text → LangChain Groq processes and responds → Frontend displays the AI's response.
+
 
 ### Security
 Environment Variables: Sensitive keys (e.g., AWS, Groq) are stored in .env files and should not be exposed publicly.
