@@ -27,7 +27,7 @@ A powerful web-based platform for intelligent PDF analysis and querying using AI
 
 ## 📋 Overview
 
-PDFinsites revolutionizes document analysis by combining powerful PDF processing with state-of-the-art AI technology. After a simple login with your name, you can upload PDFs and interact with their content through natural language queries or generate summaries of different lengths, all powered by Groq's advanced language models.
+PDFinsights revolutionizes document analysis by combining powerful PDF processing with state-of-the-art AI technology. After a simple login with your name, you can upload PDFs and interact with their content through natural language queries or generate summaries of different lengths, all powered by Groq's advanced language models.
 
 ## 🎯 How It Works
 
@@ -85,8 +85,8 @@ PDFinsites revolutionizes document analysis by combining powerful PDF processing
 
 1. **Clone the Repository**
 ```bash
-git clone https://github.com/yourusername/pdfinsites.git
-cd pdfinsites
+git clone https://github.com/yourusername/PDFinsights.git
+cd PDFinsights
 ```
 
 2. **Install Dependencies**
