@@ -151,12 +151,3 @@ for image in images:
     text += image_to_string(image, lang="eng")
 ```
 
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-<div align="center">
-Made with ❤️ by the PDFinsites Team
-</div>
