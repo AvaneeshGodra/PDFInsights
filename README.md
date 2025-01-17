@@ -25,9 +25,9 @@ A powerful web-based platform for intelligent PDF analysis and querying using AI
 
 ## 📊 Demo
 
-![PDFinsites Demo](assets/DEMOGIFPI-ezgif.com-video-to-gif-converter.gif)
+![PDFinsights Demo](assets/DEMOGIFPI-ezgif.com-video-to-gif-converter.gif)
 
-Try it yourself: [PDFinsites Live Demo](https://pdfinsights.netlify.app/)
+Try it yourself: [PDFinsights](https://pdfinsights.netlify.app/)
 
 ## 📋 Overview
 
