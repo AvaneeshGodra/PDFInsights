@@ -221,5 +221,5 @@ Common issues and their solutions:
 
 <div align="center">
 
-[Website](https://pdfinsites.netlify.app/) · [Report Bug](https://github.com/AvaneeshGodra/PDFinsights/issues)
+[Website](https://pdfinsights.netlify.app/) · [Report Bug](https://github.com/AvaneeshGodra/PDFinsights/issues)
 </div>
