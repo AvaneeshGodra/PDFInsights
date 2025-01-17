@@ -4,8 +4,6 @@
 
 A powerful web-based platform for intelligent PDF analysis and querying using AI
 
-[Live Demo](https://pdfinsights.netlify.app/) 
-
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -24,6 +22,12 @@ A powerful web-based platform for intelligent PDF analysis and querying using AI
 > - Better performance
 > - No spin-down issues
 > - Reliable file processing
+
+## 📊 Demo
+
+![PDFinsites Demo](assets/DEMOGIFPI-ezgif.com-video-to-gif-converter.gif)
+
+Try it yourself: [PDFinsites Live Demo](https://pdfinsights.netlify.app/)
 
 ## 📋 Overview
 
