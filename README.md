@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🔍 PDFinsites
+# 🔍 PDFinsights
 
 A powerful web-based platform for intelligent PDF analysis and querying using AI
 
-[Live Demo](https://pdfinsites.netlify.app/) 
+[Live Demo](https://pdfinsights.netlify.app/) 
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
