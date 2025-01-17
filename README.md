@@ -15,7 +15,7 @@ A powerful web-based platform for intelligent PDF analysis and querying using AI
 
 </div>
 
-> ⚠️ **Important Notice**: If you encounter file upload errors, this might be due to Render's free tier spinning down inactive services. Please try uploading again after a few moments. For production deployments, we recommend using AWS EC2 to avoid such issues and ensure consistent uptime.
+> ⚠️ **Important Notice**: If you encounter file upload errors, this might be due to Render's free tier spinning down inactive services. Please try uploading again after a few moments. For production deployments, I recommend using AWS EC2 to avoid such issues and ensure consistent uptime.
 >
 > 💡 **Quick Fix**: Simply wait a moment and try your upload again. The service should respond on the second attempt.
 >
@@ -127,7 +127,6 @@ REACT_APP_UPLOAD=upload_url
 - Summary generation time: < 5 seconds
 - Query response time: < 3 seconds
 - Supported format: PDF files
-- Concurrent user support: Up to 100
 
 ## 🔄 System Flow
 
@@ -218,22 +217,9 @@ Common issues and their solutions:
    - Try clicking the button again
    - Check if file was uploaded successfully
    - Verify internet connection
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Support
-
-For support, please:
-- 📧 Email: support@pdfinsites.com
-- 💬 Discord: [Join our community](https://discord.gg/pdfinsites)
-- 📚 Documentation: [Read the docs](https://docs.pdfinsites.com)
-
 ---
 
 <div align="center">
-Made with ❤️ by the PDFinsites Team
 
-[Website](https://pdfinsites.netlify.app/) · [Report Bug](https://github.com/yourusername/pdfinsites/issues)
+[Website](https://pdfinsites.netlify.app/) · [Report Bug](https://github.com/AvaneeshGodra/PDFinsights/issues)
 </div>
