@@ -68,28 +68,28 @@ npm i (for frontend)
 
 ### Code Update For OCR
 As part of the feature development, the following code was initially used for text extraction:
-# Read PDF content using Fitz (PyMuPDF)
-text = ""
-with fitz.open(stream=file_content, filetype="pdf") as doc:
-    for page in doc:
-        text += page.get_text()
+- Read PDF content using Fitz (PyMuPDF)
+- text = ""
+- with fitz.open(stream=file_content, filetype="pdf") as doc:
+   -  for page in doc:
+       -  text += page.get_text()
 
-if not text.strip():
-    raise HTTPException(status_code=500, detail="Failed to extract text from PDF")
+- if not text.strip():
+   - raise HTTPException(status_code=500, detail="Failed to extract text from PDF")
 
-#For OCR not in the code because OCR works on System Level and Render (Free tier) does not allows System Level access can be done if deployed on AWS.
-Just need to change the above part of the code to this one and istall the dependencies.
+- For OCR not in the code because OCR works on System Level and Render (Free tier) does not allows System Level access can be done if deployed on AWS.
+- Just need to change the above part of the code to this one and istall the dependencies.
 
-#  Convert PDF pages to images using pdf2image
-images = convert_from_bytes(file_content)
+ -  Convert PDF pages to images using pdf2image
+- images = convert_from_bytes(file_content)
 
-# Extract text using OCR (Tesseract)
-text = ""
-for image in images:
-    text += image_to_string(image, lang="eng")
+-  Extract text using OCR (Tesseract)
+- text = ""
+- for image in images:
+   -  text += image_to_string(image, lang="eng")
 
-if not text.strip():
-    raise HTTPException(status_code=500, detail="Failed to extract text using OCR")
+- if not text.strip():
+   -  raise HTTPException(status_code=500, detail="Failed to extract text using OCR")
 
 
 ### API Endpoints
